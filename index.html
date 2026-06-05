@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jagatguru Institute — Campaign Performance Report | Galvor AI</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+  background: #F0F4F8;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ── HEADER ─────────────────────────────────────── */
+.report-header {
+  background: linear-gradient(135deg, #0B1D3A 0%, #15376B 100%);
+  border-radius: 14px;
+  padding: 36px 40px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.header-left {}
+.header-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 8px;
+}
+.header-client {
+  font-size: 28px;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.1;
+}
+.header-report-type {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4px;
+}
+.header-period {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 10px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+.pill-galvor {
+  background: rgba(59,130,246,0.25);
+  border: 1px solid rgba(59,130,246,0.4);
+  color: #93C5FD;
+}
+.pill-confidential {
+  background: rgba(239,68,68,0.2);
+  border: 1px solid rgba(239,68,68,0.35);
+  color: #FCA5A5;
+}
+
+/* ── KPI GRID ────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.kpi-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  padding: 16px 18px;
+}
+.kpi-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 5px;
+}
+.kpi-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0B1D3A;
+  line-height: 1.1;
+}
+.kpi-sub {
+  font-size: 11px;
+  color: #9CA3AF;
+  margin-top: 3px;
+}
+
+/* ── HEALTH CHIPS ────────────────────────────────── */
+.health-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.health-chip {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.health-dot { font-size: 18px; margin-bottom: 3px; }
+.health-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #374151;
+  margin-bottom: 2px;
+}
+.health-value { font-size: 11px; color: #6B7280; }
+
+/* ── SECTIONS ────────────────────────────────────── */
+.sections { display: flex; flex-direction: column; gap: 8px; }
+
+.section {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.section-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 18px;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+  transition: background 0.1s;
+}
+.section-trigger:hover { background: #FAFAFA; }
+
+.trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+.section-subtitle {
+  font-size: 11px;
+  color: #9CA3AF;
+  margin-top: 1px;
+}
+
+.chevron {
+  color: #D1D5DB;
+  font-size: 16px;
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+.section.open .chevron { transform: rotate(180deg); }
+
+.section-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  border-top: 0px solid #F3F4F6;
+}
+.section.open .section-body {
+  max-height: 9999px;
+  border-top-width: 1px;
+}
+.section-inner { padding: 18px 18px 20px; }
+
+/* ── ICON COLOUR VARIANTS ────────────────────────── */
+.ic-blue   { background: #DBEAFE; }
+.ic-purple { background: #EDE9FE; }
+.ic-green  { background: #DCFCE7; }
+.ic-amber  { background: #FEF3C7; }
+.ic-red    { background: #FEE2E2; }
+.ic-indigo { background: #E0E7FF; }
+.ic-teal   { background: #CCFBF1; }
+.ic-pink   { background: #FCE7F3; }
+.ic-navy   { background: #DBEAFE; }
+
+/* ── SHARED TABLE STYLES ─────────────────────────── */
+.dt {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.dt th {
+  background: #F9FAFB;
+  padding: 9px 11px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 1px solid #E5E7EB;
+}
+.dt td {
+  padding: 9px 11px;
+  border-bottom: 1px solid #F3F4F6;
+  color: #374151;
+  vertical-align: middle;
+}
+.dt tr:last-child td { border-bottom: none; }
+.dt tr:hover td { background: #FAFAFA; }
+.dt .num { text-align: right; font-variant-numeric: tabular-nums; }
+.dt .bold { font-weight: 700; color: #111827; }
+.dt .total td { font-weight: 700; background: #F9FAFB; border-top: 2px solid #E5E7EB; color: #111827; }
+
+/* ── STATUS / TAGS ───────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.b-green  { background: #DCFCE7; color: #166534; }
+.b-amber  { background: #FEF3C7; color: #92400E; }
+.b-red    { background: #FEE2E2; color: #991B1B; }
+.b-blue   { background: #DBEAFE; color: #1E40AF; }
+.b-best   { background: #D1FAE5; color: #065F46; }
+.b-low    { background: #FEE2E2; color: #7F1D1D; }
+
+/* ── CALLOUT ─────────────────────────────────────── */
+.callout {
+  background: #EFF6FF;
+  border-left: 3px solid #3B82F6;
+  border-radius: 0 8px 8px 0;
+  padding: 11px 14px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: #1D4ED8;
+  line-height: 1.5;
+}
+.callout strong { color: #1E3A8A; }
+
+/* ── SUB-HEADING ─────────────────────────────────── */
+.sh {
+  font-size: 10px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 18px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #F3F4F6;
+}
+.sh:first-child { margin-top: 0; }
+
+/* ── MINI KPI ROW ────────────────────────────────── */
+.mkpi-row {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.mkpi-row-3 { grid-template-columns: repeat(3, 1fr); }
+.mkpi-row-6 { grid-template-columns: repeat(6, 1fr); }
+.mkpi {
+  background: #F9FAFB;
+  border-radius: 8px;
+  padding: 11px 10px;
+  text-align: center;
+}
+.mkpi-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0B1D3A;
+  line-height: 1.1;
+}
+.mkpi-lbl {
+  font-size: 10px;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-top: 3px;
+}
+
+/* ── CREATOR CARDS ───────────────────────────────── */
+.creator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.creator-card {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 14px;
+}
+.cr-name { font-size: 13px; font-weight: 700; color: #111827; }
+.cr-handle { font-size: 11px; color: #6B7280; margin-bottom: 10px; }
+.cr-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.cr-stat {
+  background: #fff;
+  border-radius: 6px;
+  padding: 7px;
+  text-align: center;
+}
+.cr-stat-val { font-size: 13px; font-weight: 700; color: #0B1D3A; }
+.cr-stat-lbl { font-size: 10px; color: #9CA3AF; }
+.cr-fee { font-size: 11px; color: #6B7280; }
+.cr-fee strong { color: #111827; }
+
+/* ── TWO COL ─────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+
+/* ── INFO LIST ───────────────────────────────────── */
+.info-list { display: grid; grid-template-columns: 140px 1fr; gap: 7px 16px; font-size: 13px; margin-top: 10px; }
+.il-label { font-weight: 600; color: #6B7280; }
+.il-value { color: #111827; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+.report-footer {
+  text-align: center;
+  padding: 24px 0 0;
+  font-size: 12px;
+  color: #9CA3AF;
+}
+.report-footer a { color: #9CA3AF; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .health-row { grid-template-columns: repeat(2, 1fr); }
+  .mkpi-row-6 { grid-template-columns: repeat(3, 1fr); }
+  .creator-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .report-header { flex-direction: column; gap: 14px; padding: 24px; }
+  .header-right { align-items: flex-start; flex-direction: row; }
+  .kpi-value { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════ -->
+  <div class="report-header">
+    <div class="header-left">
+      <div class="header-eyebrow">Galvor AI — Campaign Intelligence</div>
+      <div class="header-client">Jagatguru Institute</div>
+      <div class="header-report-type">Campaign Performance Report</div>
+      <div class="header-period">April 2026 – May 2026 &nbsp;·&nbsp; Chennai, Tamil Nadu &nbsp;·&nbsp; CBSE Coaching</div>
+    </div>
+    <div class="header-right">
+      <div class="pill pill-galvor">Prepared by Galvor AI</div>
+      <div class="pill pill-confidential">Confidential</div>
+    </div>
+  </div>
+
+  <!-- ═══ KPI CARDS ═════════════════════════════════════════ -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Views (YT + IG)</div>
+      <div class="kpi-value">11.64L</div>
+      <div class="kpi-sub">YouTube 10.98L · Instagram 65K</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Paid Impressions</div>
+      <div class="kpi-value">18.52L</div>
+      <div class="kpi-sub">Google 14.14L · Meta 4.38L</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Form Fills</div>
+      <div class="kpi-value">38</div>
+      <div class="kpi-sub">34 Meta · 4 YouTube</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Investment</div>
+      <div class="kpi-value">₹1,06,724</div>
+      <div class="kpi-sub">Ads ₹60,224 · Creators ₹46,500</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Audience Gained (YT + IG)</div>
+      <div class="kpi-value">594</div>
+      <div class="kpi-sub">YT 540 subs · IG 54 followers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Creators Activated</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-sub">Dhurga · Prathik · Ashwadh · TamilMom</div>
+    </div>
+  </div>
+
+  <!-- ═══ HEALTH CHIPS ══════════════════════════════════════ -->
+  <div class="health-row">
+    <div class="health-chip">
+      <div class="health-dot">🟢</div>
+      <div class="health-label">Awareness</div>
+      <div class="health-value">18.52L paid · 11.64L views</div>
+    </div>
+    <div class="health-chip">
+      <div class="health-dot">🟡</div>
+      <div class="health-label">Engagement</div>
+      <div class="health-value">8.05% YT CTR · 309 IG likes</div>
+    </div>
+    <div class="health-chip">
+      <div class="health-dot">🟡</div>
+      <div class="health-label">Leads</div>
+      <div class="health-value">38 form fills · ₹2,809 CPL (all-in)</div>
+    </div>
+    <div class="health-chip">
+      <div class="health-dot">🔴</div>
+      <div class="health-label">Admissions</div>
+      <div class="health-value">0 attributed</div>
+    </div>
+  </div>
+
+  <!-- ═══ ACCORDION SECTIONS ════════════════════════════════ -->
+  <div class="sections">
+
+    <!-- 1. Campaign Overview -->
+    <div class="section" id="s1">
+      <div class="section-trigger" onclick="toggle('s1')">
+        <div class="trigger-left">
+          <div class="section-icon ic-blue">🏫</div>
+          <div>
+            <div class="section-title">Campaign Overview</div>
+            <div class="section-subtitle">About Jagatguru · Objectives · Channels activated</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">About Jagatguru Institute</div>
+          <div class="info-list">
+            <div class="il-label">Institute</div><div class="il-value">Jagatguru Institute</div>
+            <div class="il-label">Location</div><div class="il-value">Chennai, Tamil Nadu</div>
+            <div class="il-label">Category</div><div class="il-value">CBSE Coaching — Class IX to XII</div>
+            <div class="il-label">Target Audience</div><div class="il-value">Class IX–XII students and their parents</div>
+            <div class="il-label">Primary Language</div><div class="il-value">Tamil & English</div>
+            <div class="il-label">Campaign Period</div><div class="il-value">April 2026 – May 2026</div>
+            <div class="il-label">Experience</div><div class="il-value">25+ years of coaching excellence</div>
+          </div>
+
+          <div class="sh">Campaign Objectives</div>
+          <table class="dt">
+            <thead><tr><th>Objective</th><th>Status</th><th>Outcome</th></tr></thead>
+            <tbody>
+              <tr><td>Build awareness among TN students &amp; parents</td><td><span class="badge b-green">🟢 Achieved</span></td><td>18.52L paid impressions served</td></tr>
+              <tr><td>Grow YouTube and Instagram organically</td><td><span class="badge b-amber">🟡 In Progress</span></td><td>540 YT subs · 54 IG followers (0 → 54, account built from scratch)</td></tr>
+              <tr><td>Generate qualified leads (form fills)</td><td><span class="badge b-amber">🟡 Partial</span></td><td>38 form fills · ₹1,585 CPL</td></tr>
+              <tr><td>Test creator vs. brand content</td><td><span class="badge b-green">🟢 Done</span></td><td>Creator content 4.5× more views per post</td></tr>
+              <tr><td>Reach UAE Tamil diaspora</td><td><span class="badge b-amber">🟡 Partial</span></td><td>UAE campaign ran · ₹2,083 spent</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Channels Activated</div>
+          <table class="dt">
+            <thead><tr><th>Channel</th><th>Organic</th><th>Paid Ads</th><th>Creator</th></tr></thead>
+            <tbody>
+              <tr><td>YouTube</td><td>✓</td><td>✓ Google Demand Gen</td><td>✓ Dhurga, Ashwadh</td></tr>
+              <tr><td>Instagram</td><td>✓</td><td>✓ Meta Ads</td><td>✓ Dhurga, Prathik, TamilMom, Ashwadh</td></tr>
+              <tr><td>Landing Page (jagatguru.galvor.ai)</td><td>—</td><td>✓ Traffic destination</td><td>—</td></tr>
+              <tr><td>UAE — Instagram</td><td>—</td><td>✓ Meta Ads (AE targeting)</td><td>✓ TamilMom (Divya)</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Content Published -->
+    <div class="section" id="s2">
+      <div class="section-trigger" onclick="toggle('s2')">
+        <div class="trigger-left">
+          <div class="section-icon ic-purple">📹</div>
+          <div>
+            <div class="section-title">Content Published</div>
+            <div class="section-subtitle">8 YouTube videos · 18 Instagram posts · Apr–May 2026</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">YouTube — Organic Channel Videos</div>
+          <table class="dt">
+            <thead><tr><th>#</th><th>Video Title</th><th>Format</th><th>Published</th><th>Duration</th><th>By</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="bold">Dhurga visits Jagatguru — 25 Years of Toppers</td><td>Short</td><td>May 29</td><td>44s</td><td>Creator (Dhurga)</td></tr>
+              <tr><td>2</td><td class="bold">Why do students struggle with maths</td><td>Short</td><td>May 22</td><td>63s</td><td>In-house</td></tr>
+              <tr><td>3</td><td class="bold">How to find the right teacher for your child</td><td>Short</td><td>May 24</td><td>65s</td><td>In-house</td></tr>
+              <tr><td>4</td><td>Why Kids Need to Make Mistakes to Learn</td><td>Short</td><td>May 30</td><td>54s</td><td>In-house</td></tr>
+              <tr><td>5</td><td>Solving Derivatives &amp; Differential Calculus</td><td>Long-form</td><td>May 23</td><td>~99 min</td><td>In-house</td></tr>
+              <tr><td>6</td><td>Class 11 Maths Cheat Sheet</td><td>Short</td><td>May 28</td><td>15s</td><td>In-house</td></tr>
+              <tr><td>7</td><td>Class 10 Maths Formula Cheat Sheet</td><td>Short</td><td>May 26</td><td>15s</td><td>In-house</td></tr>
+              <tr><td>8</td><td>Class 12 Calculus Cheat Sheet</td><td>Short</td><td>May 29</td><td>15s</td><td>In-house</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">Ad creatives (Past Student.mp4 and Past_Student_2.mp4) were uploaded as unlisted videos for Google Demand Gen campaigns. Their ~8.97L views are counted under YouTube Ads, not organic.</div>
+
+          <div class="sh">Instagram — All Posts</div>
+          <table class="dt">
+            <thead><tr><th>#</th><th>Caption Theme</th><th>Format</th><th>Date</th><th>Account</th><th>Boosted</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="bold">Finding the right teacher matters</td><td>Reel</td><td>May 24</td><td>@jagatguru_institute</td><td>✓ ₹158</td></tr>
+              <tr><td>2</td><td class="bold">The biggest mistake students make (12th boards)</td><td>Reel</td><td>May 5</td><td>@prathik_utters</td><td>✓ ₹263</td></tr>
+              <tr><td>3</td><td class="bold">Dreams + Dedication + Jagatguru</td><td>Reel</td><td>May 29</td><td>@dhurgaglobal</td><td>—</td></tr>
+              <tr><td>4</td><td>Most parents pay first, ask questions later</td><td>Carousel</td><td>Apr 29</td><td>@jagatguru_institute</td><td>✓ ₹550</td></tr>
+              <tr><td>5</td><td>25+ Years of Excellence — UAE Students</td><td>Reel</td><td>Apr 24</td><td>@tamilmomlifestyleindubai</td><td>✓ UAE</td></tr>
+              <tr><td>6</td><td>This is the reality today (discipline)</td><td>Reel</td><td>May 22</td><td>@jagatguru_institute</td><td>✓ ₹124</td></tr>
+              <tr><td>7</td><td>Preparing for board exams should not feel like the end of the world</td><td>Static</td><td>May 14</td><td>@jagatguru_institute</td><td>✓ ₹212</td></tr>
+              <tr><td>8</td><td>Akshaya: 100/100 in 10th Maths (Testimonial)</td><td>Reel</td><td>May 15</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>9</td><td>Vaishnavi: 98 in Maths despite NEET prep (Testimonial)</td><td>Carousel</td><td>May 25</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>10</td><td>Class 10 Maths Formula Cheat Sheet</td><td>Static</td><td>May 26</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>11</td><td>Class 11 Maths Cheat Sheet #1</td><td>Static</td><td>May 27</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>12</td><td>Class 11 Maths Cheat Sheet #2</td><td>Static</td><td>May 27</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>13</td><td>Class 12 Calculus Cheat Sheet</td><td>Static</td><td>May 29</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>14</td><td>Class 8 &amp; 9 Maths Cheat Sheet</td><td>Static</td><td>May 23</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>15</td><td>Mistakes aren't a sign learning isn't happening (Parenting)</td><td>Reel</td><td>May 30</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>16</td><td>Jagatguru Institute — ex-student review</td><td>Reel</td><td>Apr 24</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>17</td><td>Math &amp; Science exam anxiety — 25 years of trust</td><td>Carousel</td><td>Apr 22</td><td>@jagatguru_institute</td><td>—</td></tr>
+              <tr><td>18</td><td>Stop stressing. Start understanding.</td><td>Static</td><td>Apr 21</td><td>@jagatguru_institute</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">Summary — YouTube: 8 videos | Instagram: 18 posts | Creator-led: 4 posts (1 YT + 3 IG) | Boosted IG posts: 5 | Cheat sheets: 5 static IG posts + 3 YT Shorts</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Creator Activity -->
+    <div class="section" id="s3">
+      <div class="section-trigger" onclick="toggle('s3')">
+        <div class="trigger-left">
+          <div class="section-icon ic-green">🎙️</div>
+          <div>
+            <div class="section-title">Creator & Influencer Activity</div>
+            <div class="section-subtitle">4 creators · ₹46,500 total fees · Creator vs. Brand performance</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">Creator Overview</div>
+          <div class="creator-grid">
+            <div class="creator-card">
+              <div class="cr-name">Dhurga &nbsp;<span class="badge b-best">Best ROI</span></div>
+              <div class="cr-handle">@dhurgaglobal · Travel / Lifestyle · Chennai</div>
+              <div class="cr-stats">
+                <div class="cr-stat"><div class="cr-stat-val">1,03,610</div><div class="cr-stat-lbl">YT Views</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">10,596</div><div class="cr-stat-lbl">IG Views</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">79</div><div class="cr-stat-lbl">IG Likes</div></div>
+              </div>
+              <div class="cr-fee">Fee: <strong>₹2,500</strong> &nbsp;·&nbsp; 1 YT Short + 1 IG Reel</div>
+            </div>
+            <div class="creator-card">
+              <div class="cr-name">Prathik Kantharaj</div>
+              <div class="cr-handle">@prathik_utters · Student Content · Instagram</div>
+              <div class="cr-stats">
+                <div class="cr-stat"><div class="cr-stat-val">11,804</div><div class="cr-stat-lbl">IG Views</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">51</div><div class="cr-stat-lbl">Likes</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">2</div><div class="cr-stat-lbl">Comments</div></div>
+              </div>
+              <div class="cr-fee">Fee: <strong>₹10,000</strong> &nbsp;·&nbsp; 1 IG Reel</div>
+            </div>
+            <div class="creator-card">
+              <div class="cr-name">Ashwadh</div>
+              <div class="cr-handle">@ashwadh · Education / Tamil · IG + YouTube Ads</div>
+              <div class="cr-stats">
+                <div class="cr-stat"><div class="cr-stat-val">733</div><div class="cr-stat-lbl">IG Clicks</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">₹0.97</div><div class="cr-stat-lbl">CPC (Meta)</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">Paid</div><div class="cr-stat-lbl">Creative</div></div>
+              </div>
+              <div class="cr-fee">Fee: <strong>₹9,000</strong> &nbsp;·&nbsp; Content used in Meta + Google Ads</div>
+            </div>
+            <div class="creator-card">
+              <div class="cr-name">Divya (TamilMom)</div>
+              <div class="cr-handle">@tamilmomlifestyleindubai · Parenting · UAE</div>
+              <div class="cr-stats">
+                <div class="cr-stat"><div class="cr-stat-val">8,541</div><div class="cr-stat-lbl">IG Views</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">87</div><div class="cr-stat-lbl">Likes</div></div>
+                <div class="cr-stat"><div class="cr-stat-val">5</div><div class="cr-stat-lbl">Comments</div></div>
+              </div>
+              <div class="cr-fee">Fee: <strong>₹25,000</strong> &nbsp;·&nbsp; UAE market activation · 1 IG Reel</div>
+            </div>
+          </div>
+
+          <div class="sh">Creator vs. Brand Content — Instagram</div>
+          <table class="dt">
+            <thead><tr><th>Metric</th><th>Creator-Led (3 posts)</th><th>Brand / In-house (15 posts)</th></tr></thead>
+            <tbody>
+              <tr><td>Total Views</td><td class="bold">30,941</td><td>34,267</td></tr>
+              <tr><td>Avg Views per Post</td><td class="bold">10,314</td><td>2,284</td></tr>
+              <tr><td>Avg Likes per Post</td><td class="bold">72</td><td>6</td></tr>
+              <tr><td>Avg Shares per Post</td><td class="bold">5.7</td><td>0</td></tr>
+              <tr><td>Avg Comments per Post</td><td class="bold">2.7</td><td>0.1</td></tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>Creator content outperformed brand content 4.5× on average views per post.</strong> Dhurga alone delivered 1,14,206 combined views for ₹2,500 — just ₹0.02 per view.</div>
+
+          <div class="sh">Creator ROI Summary</div>
+          <table class="dt">
+            <thead><tr><th>Creator</th><th>Fee</th><th>Combined Views</th><th>Cost / View</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>Dhurga</td><td>₹2,500</td><td class="bold">1,14,206</td><td>₹0.02</td><td><span class="badge b-green">Exceptional</span></td></tr>
+              <tr><td>Prathik</td><td>₹10,000</td><td>11,804</td><td>₹0.85</td><td><span class="badge b-amber">Moderate</span></td></tr>
+              <tr><td>Ashwadh</td><td>₹9,000</td><td>733 clicks</td><td>—</td><td><span class="badge b-amber">Ad Creative Value</span></td></tr>
+              <tr><td>TamilMom / Divya</td><td>₹25,000</td><td>8,541</td><td>₹2.93</td><td><span class="badge b-amber">UAE Market Access</span></td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Meta Ads -->
+    <div class="section" id="s4">
+      <div class="section-trigger" onclick="toggle('s4')">
+        <div class="trigger-left">
+          <div class="section-icon ic-blue">📘</div>
+          <div>
+            <div class="section-title">Meta Ads Performance</div>
+            <div class="section-subtitle">₹12,384 spend · 4,21,316 reach · 34 form fills attributed</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="mkpi-row mkpi-row-6">
+            <div class="mkpi"><div class="mkpi-val">₹12,384</div><div class="mkpi-lbl">Total Spend</div></div>
+            <div class="mkpi"><div class="mkpi-val">4,21,316</div><div class="mkpi-lbl">Reach</div></div>
+            <div class="mkpi"><div class="mkpi-val">4,38,428</div><div class="mkpi-lbl">Impressions</div></div>
+            <div class="mkpi"><div class="mkpi-val">₹28.25</div><div class="mkpi-lbl">CPM</div></div>
+            <div class="mkpi"><div class="mkpi-val">7,642</div><div class="mkpi-lbl">Link Clicks</div></div>
+            <div class="mkpi"><div class="mkpi-val">₹1.62</div><div class="mkpi-lbl">Avg CPC</div></div>
+          </div>
+
+          <div class="sh">Spend by Campaign</div>
+          <table class="dt">
+            <thead><tr><th>Campaign</th><th class="num">Spend (₹)</th><th class="num">Reach</th><th class="num">Impressions</th><th>Result Type</th><th class="num">Results</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>TN Campaign – Students</td>
+                <td class="num bold">₹6,147</td><td class="num">2,97,470</td><td class="num">3,05,506</td>
+                <td>Link clicks</td><td class="num">7,199</td>
+              </tr>
+              <tr>
+                <td>Retargeting Campaign</td>
+                <td class="num bold">₹2,847</td><td class="num">8,968</td><td class="num">12,978</td>
+                <td>Registrations (pixel)</td><td class="num">193</td>
+              </tr>
+              <tr>
+                <td>UAE Campaign</td>
+                <td class="num bold">₹2,083</td><td class="num">27,725</td><td class="num">28,702</td>
+                <td>Landing page views</td><td class="num">84</td>
+              </tr>
+              <tr>
+                <td>Boosted IG Posts (5 posts)</td>
+                <td class="num bold">₹1,307</td><td class="num">—</td><td class="num">—</td>
+                <td>Clicks / Profile visits</td><td class="num">443</td>
+              </tr>
+              <tr class="total">
+                <td>Total</td>
+                <td class="num">₹12,384</td><td class="num">4,21,316</td><td class="num">4,38,428</td>
+                <td>—</td><td class="num">34 actual form fills</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Top Performing Ad Creatives</div>
+          <table class="dt">
+            <thead><tr><th>Creative</th><th class="num">Spend</th><th class="num">Clicks</th><th class="num">CPC</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Past_Student_2 &nbsp;<span class="badge b-best">Best CPC</span></td><td class="num">₹2,693</td><td class="num">3,709</td><td class="num bold">₹0.73</td><td><span class="badge b-green">Strong</span></td></tr>
+              <tr><td>Past_Student</td><td class="num">₹2,422</td><td class="num">2,757</td><td class="num">₹0.88</td><td><span class="badge b-green">Strong</span></td></tr>
+              <tr><td>Ashwadh (Creator)</td><td class="num">₹714</td><td class="num">733</td><td class="num">₹0.97</td><td><span class="badge b-green">Good</span></td></tr>
+              <tr><td>IG Post: "Biggest mistake students make"</td><td class="num">₹263</td><td class="num">200</td><td class="num">₹1.32</td><td><span class="badge b-green">Good</span></td></tr>
+              <tr><td>Retargeting Ads_2 &nbsp;<span class="badge b-best">Most Leads</span></td><td class="num">₹2,105</td><td class="num">—</td><td class="num">—</td><td>161 registrations (pixel)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">vs. EdTech India Benchmarks</div>
+          <table class="dt">
+            <thead><tr><th>Metric</th><th>Actual</th><th>Benchmark</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>CPM</td><td>₹28.25</td><td>₹80–₹150</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
+              <tr><td>CPC (traffic campaigns)</td><td>₹1.62</td><td>₹8–₹20</td><td><span class="badge b-green">🟢 Excellent</span></td></tr>
+              <tr><td>CTR (traffic campaigns)</td><td>1.74%</td><td>1.5–3%</td><td><span class="badge b-green">🟢 Within range</span></td></tr>
+              <tr><td>CPL — Meta attributed</td><td>₹364</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
+              <tr><td>CPL — Retargeting only</td><td>₹92</td><td>₹150–₹400</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>Retargeting was the highest-impact Meta campaign.</strong> The testimonial retargeting campaign drove 31 of 38 form fills at ₹92 CPL — more than 4× better than the category benchmark of ₹150–₹400.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. YouTube Performance -->
+    <div class="section" id="s5">
+      <div class="section-trigger" onclick="toggle('s5')">
+        <div class="trigger-left">
+          <div class="section-icon ic-red">▶️</div>
+          <div>
+            <div class="section-title">YouTube Performance</div>
+            <div class="section-subtitle">10.98L views · Google Demand Gen · ₹47,840 spend</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">Channel Overview — All Sources</div>
+          <div class="mkpi-row mkpi-row-6">
+            <div class="mkpi"><div class="mkpi-val">10,98,358</div><div class="mkpi-lbl">Total Views</div></div>
+            <div class="mkpi"><div class="mkpi-val">4,854 hrs</div><div class="mkpi-lbl">Watch Time</div></div>
+            <div class="mkpi"><div class="mkpi-val">540</div><div class="mkpi-lbl">Subs Gained</div></div>
+            <div class="mkpi"><div class="mkpi-val">0:00:43</div><div class="mkpi-lbl">Avg Duration</div></div>
+            <div class="mkpi"><div class="mkpi-val">1,505</div><div class="mkpi-lbl">Channel Impr.</div></div>
+            <div class="mkpi"><div class="mkpi-val">4.45%</div><div class="mkpi-lbl">Channel CTR</div></div>
+          </div>
+
+          <div class="sh">Organic Channel Videos — Performance</div>
+          <table class="dt">
+            <thead><tr><th>Video</th><th>Published</th><th class="num">Views</th><th class="num">Watch Time</th><th class="num">Subs</th><th class="num">CTR</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="bold">Dhurga visits Jagatguru</span> &nbsp;<span class="badge b-best">#1</span></td>
+                <td>May 29</td><td class="num bold">1,03,610</td><td class="num">367 hrs</td><td class="num">1</td><td class="num">8.94%</td>
+              </tr>
+              <tr>
+                <td><span class="bold">Why students struggle with maths</span> &nbsp;<span class="badge b-best">#2</span></td>
+                <td>May 22</td><td class="num bold">52,068</td><td class="num">38 hrs</td><td class="num">13</td><td class="num">9.68%</td>
+              </tr>
+              <tr>
+                <td class="bold">How to find the right teacher</td>
+                <td>May 24</td><td class="num bold">44,533</td><td class="num">41 hrs</td><td class="num">1</td><td class="num">3.55%</td>
+              </tr>
+              <tr>
+                <td>Why Kids Need to Make Mistakes</td>
+                <td>May 30</td><td class="num">64</td><td class="num">—</td><td class="num">0</td><td class="num">3.39%</td>
+              </tr>
+              <tr>
+                <td>Jagatguru — ex-student review</td>
+                <td>Dec 2025</td><td class="num">480</td><td class="num">4.3 hrs</td><td class="num">1</td><td class="num">3.76%</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Google Demand Gen Ads</div>
+          <div class="mkpi-row mkpi-row-6">
+            <div class="mkpi"><div class="mkpi-val">₹47,840</div><div class="mkpi-lbl">Spend</div></div>
+            <div class="mkpi"><div class="mkpi-val">14,13,799</div><div class="mkpi-lbl">Impressions</div></div>
+            <div class="mkpi"><div class="mkpi-val">1,13,842</div><div class="mkpi-lbl">Clicks</div></div>
+            <div class="mkpi"><div class="mkpi-val">8.05%</div><div class="mkpi-lbl">CTR</div></div>
+            <div class="mkpi"><div class="mkpi-val">₹0.42</div><div class="mkpi-lbl">Avg CPC</div></div>
+            <div class="mkpi"><div class="mkpi-val">₹33.84</div><div class="mkpi-lbl">CPM</div></div>
+          </div>
+
+          <div class="sh">Ad Creative Breakdown</div>
+          <table class="dt">
+            <thead><tr><th>Creative</th><th class="num">Impressions</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th><th class="num">Spend</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Alumni 2 (Past Student 2) &nbsp;<span class="badge b-best">Best CTR</span></td>
+                <td class="num">1,97,967</td><td class="num">21,888</td>
+                <td class="num bold">11.06%</td><td class="num bold">₹0.25</td><td class="num">₹5,419</td>
+              </tr>
+              <tr>
+                <td>Dhurga — Creator Ad</td>
+                <td class="num">1,13,754</td><td class="num">11,675</td>
+                <td class="num bold">10.26%</td><td class="num">₹0.37</td><td class="num">₹4,355</td>
+              </tr>
+              <tr>
+                <td>Alumni 1 (Past Student)</td>
+                <td class="num">8,55,232</td><td class="num">73,210</td>
+                <td class="num">8.56%</td><td class="num">₹0.34</td><td class="num">₹24,877</td>
+              </tr>
+              <tr>
+                <td>Retargeting Testimonials (Image)</td>
+                <td class="num">1,08,741</td><td class="num">5,512</td>
+                <td class="num">5.07%</td><td class="num">₹1.01</td><td class="num">₹5,581</td>
+              </tr>
+              <tr>
+                <td>Awareness Founder &nbsp;<span class="badge b-low">Underperformed</span></td>
+                <td class="num">1,37,449</td><td class="num">1,535</td>
+                <td class="num" style="color:#991B1B;font-weight:700">1.12%</td>
+                <td class="num" style="color:#991B1B;font-weight:700">₹4.94</td>
+                <td class="num">₹7,577</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>Awareness Founder campaign significantly underperformed.</strong> CTR of 1.12% vs 8–11% for alumni creatives. CPC of ₹4.94 vs ₹0.25–0.42. Spent ₹7,577 with no tracked conversions — budget should be reallocated.</div>
+
+          <div class="sh">Views Timeline — Key Periods</div>
+          <table class="dt">
+            <thead><tr><th>Period</th><th class="num">Avg Daily Views</th><th>What Happened</th></tr></thead>
+            <tbody>
+              <tr><td>Apr 4 – May 12</td><td class="num">~0–9</td><td>Pre-campaign. No ads running.</td></tr>
+              <tr><td>May 13–21 &nbsp;<span class="badge b-best">Peak</span></td><td class="num bold">~77,000</td><td>YouTube Ads launched. Peak: 98,490 on May 21.</td></tr>
+              <tr><td>May 22–29</td><td class="num">~27,000</td><td>Ads winding down. Organic Shorts published.</td></tr>
+              <tr><td>May 30 – Jun 1</td><td class="num">~43,500</td><td>Dhurga video (May 29) triggered second surge.</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Instagram Organic -->
+    <div class="section" id="s6">
+      <div class="section-trigger" onclick="toggle('s6')">
+        <div class="trigger-left">
+          <div class="section-icon ic-pink">📸</div>
+          <div>
+            <div class="section-title">Instagram Organic Performance</div>
+            <div class="section-subtitle">18 posts · 65,208 views · 54 followers · Account built from scratch</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="mkpi-row mkpi-row-6">
+            <div class="mkpi"><div class="mkpi-val">65,208</div><div class="mkpi-lbl">Total Views</div></div>
+            <div class="mkpi"><div class="mkpi-val">77,928</div><div class="mkpi-lbl">Total Reach</div></div>
+            <div class="mkpi"><div class="mkpi-val">309</div><div class="mkpi-lbl">Likes</div></div>
+            <div class="mkpi"><div class="mkpi-val">17</div><div class="mkpi-lbl">Shares</div></div>
+            <div class="mkpi"><div class="mkpi-val">10</div><div class="mkpi-lbl">Comments</div></div>
+            <div class="mkpi"><div class="mkpi-val">54</div><div class="mkpi-lbl">Followers (0 → 54)</div></div>
+          </div>
+
+          <div class="sh">Top 5 Posts by Views</div>
+          <table class="dt">
+            <thead><tr><th>Rank</th><th>Post</th><th>Format</th><th>Date</th><th class="num">Views</th><th class="num">Likes</th><th class="num">Follows</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="bold">Finding the right teacher matters (Brand)</td><td>Reel</td><td>May 24</td><td class="num bold">13,251</td><td class="num">27</td><td class="num">20</td></tr>
+              <tr><td>2</td><td class="bold">The biggest mistake students make (Prathik)</td><td>Reel</td><td>May 5</td><td class="num bold">11,804</td><td class="num">51</td><td class="num">—</td></tr>
+              <tr><td>3</td><td class="bold">Dreams + Dedication + Jagatguru (Dhurga)</td><td>Reel</td><td>May 29</td><td class="num bold">10,596</td><td class="num">79</td><td class="num">—</td></tr>
+              <tr><td>4</td><td>Most parents pay first, ask questions later</td><td>Carousel</td><td>Apr 29</td><td class="num">8,664</td><td class="num">23</td><td class="num">3</td></tr>
+              <tr><td>5</td><td>25+ Years of Excellence — UAE (TamilMom)</td><td>Reel</td><td>Apr 24</td><td class="num">8,541</td><td class="num">87</td><td class="num">—</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Performance by Format</div>
+          <table class="dt">
+            <thead><tr><th>Format</th><th class="num"># Posts</th><th class="num">Total Views</th><th class="num">Avg Views</th><th class="num">Likes</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>IG Reel</td><td class="num">7</td><td class="num bold">49,758</td><td class="num bold">7,108</td><td class="num">259</td><td><span class="badge b-green">Scale</span></td></tr>
+              <tr><td>IG Carousel</td><td class="num">3</td><td class="num">8,757</td><td class="num">2,919</td><td class="num">26</td><td><span class="badge b-amber">Test</span></td></tr>
+              <tr><td>IG Static / Cheat Sheet</td><td class="num">8</td><td class="num">6,693</td><td class="num">837</td><td class="num">24</td><td><span class="badge b-red">Rethink</span></td></tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>Instagram presence was built from 0 — this is a brand new account.</strong> All 54 followers were acquired during this campaign period. Every follow, view, and engagement was earned from scratch. Reels drove all follower growth — cheat sheet statics averaged 837 views with zero follows, and are better suited as YouTube Shorts or gated PDF lead magnets.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Audience Insights -->
+    <div class="section" id="s7">
+      <div class="section-trigger" onclick="toggle('s7')">
+        <div class="trigger-left">
+          <div class="section-icon ic-indigo">👥</div>
+          <div>
+            <div class="section-title">Audience & Demographic Insights</div>
+            <div class="section-subtitle">Age · Gender · Geography · Lead profile</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">YouTube — Age Breakdown</div>
+          <table class="dt">
+            <thead><tr><th>Age Group</th><th class="num">% of Views</th><th class="num">Avg Duration</th><th class="num">% Completed</th><th class="num">% Watch Time</th></tr></thead>
+            <tbody>
+              <tr><td>13–17</td><td class="num">0.81%</td><td class="num">0:00:23</td><td class="num">52%</td><td class="num">1.07%</td></tr>
+              <tr><td>18–24</td><td class="num">10.94%</td><td class="num">0:00:27</td><td class="num">60%</td><td class="num">13.23%</td></tr>
+              <tr><td class="bold">25–34 &nbsp;<span class="badge b-best">Largest</span></td><td class="num bold">36.32%</td><td class="num">0:00:28</td><td class="num">62%</td><td class="num bold">40.83%</td></tr>
+              <tr><td>35–44</td><td class="num">23.83%</td><td class="num">0:00:25</td><td class="num">53%</td><td class="num">19.30%</td></tr>
+              <tr><td>45–54</td><td class="num">11.98%</td><td class="num">0:00:30</td><td class="num">61%</td><td class="num">9.96%</td></tr>
+              <tr><td>55–64</td><td class="num">8.45%</td><td class="num">0:00:37</td><td class="num">75%</td><td class="num">8.21%</td></tr>
+              <tr><td>65+</td><td class="num">7.68%</td><td class="num">0:00:40</td><td class="num">74%</td><td class="num">7.41%</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">YouTube — Gender Breakdown</div>
+          <table class="dt">
+            <thead><tr><th>Gender</th><th class="num">% Views</th><th class="num">Avg Duration</th><th class="num">Avg % Completed</th></tr></thead>
+            <tbody>
+              <tr><td>Male</td><td class="num">52.93%</td><td class="num">0:00:29</td><td class="num">56.88%</td></tr>
+              <tr><td>Female</td><td class="num">47.07%</td><td class="num">0:00:29</td><td class="num bold">60.93%</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Geographic Distribution — YouTube (Top Cities)</div>
+          <table class="dt">
+            <thead><tr><th>City</th><th class="num">Views</th><th class="num">Watch Time</th><th class="num">Avg Duration</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td class="bold">Chennai, Tamil Nadu &nbsp;<span class="badge b-best">Core Market</span></td><td class="num bold">1,51,024</td><td class="num">394 hrs</td><td class="num">0:00:30</td><td>Primary target</td></tr>
+              <tr><td>Coimbatore, Tamil Nadu</td><td class="num">22,537</td><td class="num">27 hrs</td><td class="num">0:00:25</td><td>Strong secondary</td></tr>
+              <tr><td>Salem, Tamil Nadu</td><td class="num">2,677</td><td class="num">1.5 hrs</td><td class="num">0:00:16</td><td>—</td></tr>
+              <tr><td>Madurai, Tamil Nadu</td><td class="num">1,765</td><td class="num">1.5 hrs</td><td class="num">0:00:20</td><td>—</td></tr>
+              <tr><td>Panipat, Haryana</td><td class="num">650</td><td class="num">2.1 hrs</td><td class="num">0:00:27</td><td>Organic spillover</td></tr>
+              <tr><td>Thoothukudi, Tamil Nadu</td><td class="num">222</td><td class="num">0.8 hrs</td><td class="num">0:00:30</td><td>—</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Lead Profile — Form Fill Data (38 total)</div>
+          <div class="two-col">
+            <div>
+              <table class="dt">
+                <thead><tr><th>Class</th><th class="num">Leads</th><th class="num">%</th></tr></thead>
+                <tbody>
+                  <tr><td class="bold">Class IX &nbsp;<span class="badge b-best">Top</span></td><td class="num bold">19</td><td class="num">50%</td></tr>
+                  <tr><td>Class XII</td><td class="num">10</td><td class="num">26%</td></tr>
+                  <tr><td>Class X</td><td class="num">9</td><td class="num">24%</td></tr>
+                  <tr><td>Class XI</td><td class="num">4</td><td class="num">11%</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <table class="dt">
+                <thead><tr><th>Subject Interest</th><th class="num">Leads</th><th class="num">%</th></tr></thead>
+                <tbody>
+                  <tr><td class="bold">Mathematics &nbsp;<span class="badge b-best">Top</span></td><td class="num bold">18</td><td class="num">47%</td></tr>
+                  <tr><td>All Subjects</td><td class="num">12</td><td class="num">32%</td></tr>
+                  <tr><td>Physics</td><td class="num">7</td><td class="num">18%</td></tr>
+                  <tr><td>Biology</td><td class="num">4</td><td class="num">11%</td></tr>
+                  <tr><td>Chemistry</td><td class="num">1</td><td class="num">3%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="callout"><strong>Class IX students are the highest-interest segment (50% of leads)</strong> — parents are planning 2 years before boards. Mathematics accounts for 47% of subject interest, validating Jagatguru's core positioning as a Maths specialist.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Budget Summary -->
+    <div class="section" id="s8">
+      <div class="section-trigger" onclick="toggle('s8')">
+        <div class="trigger-left">
+          <div class="section-icon ic-amber">💰</div>
+          <div>
+            <div class="section-title">Budget & Commercial Summary</div>
+            <div class="section-subtitle">₹1,06,724 total investment · Cost per outcome</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <div class="sh">Investment Breakdown</div>
+          <table class="dt">
+            <thead><tr><th>Line Item</th><th class="num">Amount (₹)</th><th class="num">% of Total</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>YouTube Ads — Google Demand Gen</td><td class="num bold">₹47,840</td><td class="num">44.8%</td><td>Awareness + traffic play</td></tr>
+              <tr><td>Meta Ads — Instagram</td><td class="num bold">₹12,384</td><td class="num">11.6%</td><td>Traffic + Retargeting + Boosts</td></tr>
+              <tr><td>Creator — TamilMom / Divya (UAE)</td><td class="num">₹25,000</td><td class="num">23.4%</td><td>UAE market activation</td></tr>
+              <tr><td>Creator — Prathik Kantharaj</td><td class="num">₹10,000</td><td class="num">9.4%</td><td>IG Reel · 11,804 views</td></tr>
+              <tr><td>Creator — Ashwadh</td><td class="num">₹9,000</td><td class="num">8.4%</td><td>IG + YT ad creative</td></tr>
+              <tr><td>Creator — Dhurga</td><td class="num">₹2,500</td><td class="num">2.3%</td><td>1.14L combined views</td></tr>
+              <tr class="total"><td>Total Investment</td><td class="num">₹1,06,724</td><td class="num">100%</td><td>Excl. Galvor management fee</td></tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Cost Per Outcome</div>
+          <table class="dt">
+            <thead><tr><th>Metric</th><th>Actual</th><th>Benchmark</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Meta CPM</td><td>₹28.25</td><td>₹80–₹150</td><td><span class="badge b-green">🟢 Excellent</span></td></tr>
+              <tr><td>Google Ads CPM</td><td>₹33.84</td><td>—</td><td><span class="badge b-green">🟢 Efficient</span></td></tr>
+              <tr><td>Meta CPC (traffic campaigns)</td><td>₹1.62</td><td>₹8–₹20</td><td><span class="badge b-green">🟢 Excellent</span></td></tr>
+              <tr><td>Google Ads CPC</td><td>₹0.42</td><td>—</td><td><span class="badge b-green">🟢 Efficient</span></td></tr>
+              <tr><td>CPL — Meta retargeting only</td><td>₹92</td><td>₹150–₹400</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
+              <tr><td>CPL — Meta attributed</td><td>₹364</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
+              <tr><td>CPL — All media spend</td><td>₹1,585</td><td>₹150–₹400</td><td><span class="badge b-red">🔴 Attribution gap</span></td></tr>
+              <tr><td>CPL — All-in (incl. creators)</td><td>₹2,809</td><td>—</td><td><span class="badge b-red">🔴 Attribution gap</span></td></tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>The high all-in CPL (₹1,585) is primarily an attribution problem, not a lead quality problem.</strong> YouTube Ads drove 89% of ad spend for brand awareness. Its role in building the retargeting pool — which then converted at ₹92 CPL — is real but unmeasured. YouTube should not be evaluated on direct lead count alone.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Learnings -->
+    <div class="section" id="s9">
+      <div class="section-trigger" onclick="toggle('s9')">
+        <div class="trigger-left">
+          <div class="section-icon ic-teal">💡</div>
+          <div>
+            <div class="section-title">Learnings & Insights</div>
+            <div class="section-subtitle">What worked · What didn't · Key signals</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <!-- coming after review -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Way Forward -->
+    <div class="section" id="s10">
+      <div class="section-trigger" onclick="toggle('s10')">
+        <div class="trigger-left">
+          <div class="section-icon ic-green">🚀</div>
+          <div>
+            <div class="section-title">Way Forward</div>
+            <div class="section-subtitle">30–60–90 day recommendations</div>
+          </div>
+        </div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="section-body">
+        <div class="section-inner">
+          <!-- coming after review -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sections -->
+
+  <div class="report-footer">
+    Prepared by <strong>Galvor AI</strong> &nbsp;·&nbsp; <a href="#">galvor.ai</a> &nbsp;·&nbsp; Confidential — For internal use only
+  </div>
+
+</div><!-- /page -->
+
+<script>
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
