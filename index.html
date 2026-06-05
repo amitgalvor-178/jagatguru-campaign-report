@@ -365,6 +365,31 @@ body {
 .il-label { font-weight: 600; color: #6B7280; }
 .il-value { color: #111827; }
 
+/* ── SECTION ORDER ───────────────────────────────── */
+.sections { display: flex; flex-direction: column; }
+#s1  { order: 1; }
+#s9  { order: 2; }
+#s10 { order: 3; }
+#s2  { order: 4; }
+#s3  { order: 5; }
+#s4  { order: 6; }
+#s5  { order: 7; }
+#s6  { order: 8; }
+#s7  { order: 9; }
+#s8  { order: 10; }
+
+/* ── CHART CONTAINERS ────────────────────────────── */
+.chart-wrap { position: relative; height: 190px; }
+.chart-wrap-tall { position: relative; height: 230px; }
+.chart-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
 /* ── FOOTER ──────────────────────────────────────── */
 .report-footer {
   text-align: center;
@@ -386,6 +411,7 @@ body {
   .kpi-value { font-size: 18px; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="page">
@@ -699,7 +725,18 @@ body {
       <div class="section-body">
         <div class="section-inner">
 
-          <div class="mkpi-row mkpi-row-6">
+          <div class="two-col" style="margin-top:0;">
+            <div>
+              <div class="chart-label">Spend by Campaign</div>
+              <div class="chart-wrap"><canvas id="meta-spend-chart"></canvas></div>
+            </div>
+            <div>
+              <div class="chart-label">Ad Creative CPC (₹) — Lower is Better</div>
+              <div class="chart-wrap"><canvas id="meta-cpc-chart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="mkpi-row mkpi-row-6" style="margin-top:14px;">
             <div class="mkpi"><div class="mkpi-val">₹12,384</div><div class="mkpi-lbl">Total Spend</div></div>
             <div class="mkpi"><div class="mkpi-val">4,21,316</div><div class="mkpi-lbl">Reach</div></div>
             <div class="mkpi"><div class="mkpi-val">4,38,428</div><div class="mkpi-lbl">Impressions</div></div>
@@ -784,7 +821,18 @@ body {
       <div class="section-body">
         <div class="section-inner">
 
-          <div class="sh">Channel Overview — All Sources</div>
+          <div class="two-col" style="margin-top:0;">
+            <div>
+              <div class="chart-label">Organic Video Views (Top 4)</div>
+              <div class="chart-wrap"><canvas id="yt-videos-chart"></canvas></div>
+            </div>
+            <div>
+              <div class="chart-label">Google Ads Creative CTR (%)</div>
+              <div class="chart-wrap"><canvas id="yt-ads-chart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="sh" style="margin-top:18px;">Channel Overview — All Sources</div>
           <div class="mkpi-row mkpi-row-6">
             <div class="mkpi"><div class="mkpi-val">10,98,358</div><div class="mkpi-lbl">Total Views</div></div>
             <div class="mkpi"><div class="mkpi-val">4,854 hrs</div><div class="mkpi-lbl">Watch Time</div></div>
@@ -896,7 +944,18 @@ body {
       <div class="section-body">
         <div class="section-inner">
 
-          <div class="mkpi-row mkpi-row-6">
+          <div class="two-col" style="margin-top:0;">
+            <div>
+              <div class="chart-label">Avg Views by Format</div>
+              <div class="chart-wrap"><canvas id="ig-format-chart"></canvas></div>
+            </div>
+            <div>
+              <div class="chart-label">Top 5 Posts by Views</div>
+              <div class="chart-wrap-tall"><canvas id="ig-posts-chart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="mkpi-row mkpi-row-6" style="margin-top:14px;">
             <div class="mkpi"><div class="mkpi-val">65,208</div><div class="mkpi-lbl">Total Views</div></div>
             <div class="mkpi"><div class="mkpi-val">77,928</div><div class="mkpi-lbl">Total Reach</div></div>
             <div class="mkpi"><div class="mkpi-val">309</div><div class="mkpi-lbl">Likes</div></div>
@@ -947,7 +1006,18 @@ body {
       <div class="section-body">
         <div class="section-inner">
 
-          <div class="sh">YouTube — Age Breakdown</div>
+          <div class="two-col" style="margin-top:0;">
+            <div>
+              <div class="chart-label">YouTube Audience — Age Breakdown</div>
+              <div class="chart-wrap-tall"><canvas id="audience-age-chart"></canvas></div>
+            </div>
+            <div>
+              <div class="chart-label">Leads by Class</div>
+              <div class="chart-wrap"><canvas id="audience-leads-chart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="sh" style="margin-top:18px;">YouTube — Age Breakdown</div>
           <table class="dt">
             <thead><tr><th>Age Group</th><th class="num">% of Views</th><th class="num">Avg Duration</th><th class="num">% Completed</th><th class="num">% Watch Time</th></tr></thead>
             <tbody>
@@ -1326,6 +1396,146 @@ function toggle(id) {
   const el = document.getElementById(id);
   el.classList.toggle('open');
 }
+
+Chart.defaults.font.family = "-apple-system, 'Segoe UI', sans-serif";
+Chart.defaults.color = '#6B7280';
+
+const BLUE   = '#3B82F6';
+const NAVY   = '#0B1D3A';
+const GREEN  = '#10B981';
+const AMBER  = '#F59E0B';
+const RED    = '#EF4444';
+const INDIGO = '#6366F1';
+const LBLUE  = '#93C5FD';
+const XBLUE  = '#BFDBFE';
+
+// ── META: Spend by Campaign (donut) ──────────────────
+new Chart(document.getElementById('meta-spend-chart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['TN Students', 'Retargeting', 'UAE', 'IG Boosts'],
+    datasets: [{ data: [6147, 2847, 2083, 1307],
+      backgroundColor: [BLUE, GREEN, AMBER, INDIGO], borderWidth: 0, hoverOffset: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'right',
+      labels: { font: { size: 11 }, padding: 10, boxWidth: 12 } } } }
+});
+
+// ── META: Ad Creative CPC ────────────────────────────
+new Chart(document.getElementById('meta-cpc-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Past Student 2', 'Past Student', 'Ashwadh', 'IG Post (Prathik)'],
+    datasets: [{ data: [0.73, 0.88, 0.97, 1.32],
+      backgroundColor: [GREEN, BLUE, LBLUE, AMBER], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 10 }, callback: v => '₹' + v } }
+    } }
+});
+
+// ── YT: Organic Video Views ──────────────────────────
+new Chart(document.getElementById('yt-videos-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Dhurga', 'Why Students Struggle', 'Right Teacher', 'Ex-Student'],
+    datasets: [{ data: [103610, 52068, 44533, 480],
+      backgroundColor: [GREEN, BLUE, LBLUE, XBLUE], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 20 } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 10 },
+        callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'K' : v } }
+    } }
+});
+
+// ── YT: Google Ads CTR ───────────────────────────────
+new Chart(document.getElementById('yt-ads-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Alumni 2', 'Dhurga', 'Alumni 1', 'Retargeting', 'Founder'],
+    datasets: [{ data: [11.06, 10.26, 8.56, 5.07, 1.12],
+      backgroundColor: [GREEN, BLUE, LBLUE, XBLUE, RED], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 10 }, callback: v => v + '%' } }
+    } }
+});
+
+// ── IG: Avg Views by Format ──────────────────────────
+new Chart(document.getElementById('ig-format-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Reel', 'Carousel', 'Static'],
+    datasets: [{ data: [7108, 2919, 837],
+      backgroundColor: [GREEN, BLUE, XBLUE], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 10 } } }
+    } }
+});
+
+// ── IG: Top 5 Posts ──────────────────────────────────
+new Chart(document.getElementById('ig-posts-chart'), {
+  type: 'bar',
+  indexAxis: 'y',
+  data: {
+    labels: ['Right Teacher', 'Biggest Mistake', 'Dhurga Dreams', 'Most Parents', 'UAE (TamilMom)'],
+    datasets: [{ data: [13251, 11804, 10596, 8664, 8541],
+      backgroundColor: [BLUE, INDIGO, GREEN, LBLUE, AMBER], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { display: false }, ticks: { font: { size: 9 } } },
+      x: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 9 } } }
+    } }
+});
+
+// ── Audience: Age Breakdown ──────────────────────────
+new Chart(document.getElementById('audience-age-chart'), {
+  type: 'bar',
+  indexAxis: 'y',
+  data: {
+    labels: ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'],
+    datasets: [{ data: [0.81, 10.94, 36.32, 23.83, 11.98, 8.45, 7.68],
+      backgroundColor: [XBLUE, LBLUE, BLUE, '#2563EB', '#1D4ED8', '#1E40AF', NAVY], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      x: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 9 }, callback: v => v + '%' } }
+    } }
+});
+
+// ── Audience: Leads by Class ─────────────────────────
+new Chart(document.getElementById('audience-leads-chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Class IX', 'Class XII', 'Class X', 'Class XI'],
+    datasets: [{ data: [19, 10, 9, 4],
+      backgroundColor: [GREEN, BLUE, LBLUE, XBLUE], borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { font: { size: 10 }, stepSize: 5 } }
+    } }
+});
 </script>
 </body>
 </html>
