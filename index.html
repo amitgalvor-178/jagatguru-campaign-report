@@ -89,10 +89,11 @@ body {
 /* ── KPI GRID ────────────────────────────────────── */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-bottom: 10px;
 }
+.kpi-grid-5 { grid-template-columns: repeat(5, 1fr); }
+.kpi-grid-4 { grid-template-columns: repeat(4, 1fr); }
 .kpi-card {
   background: #fff;
   border-radius: 10px;
@@ -375,7 +376,7 @@ body {
 
 /* ── RESPONSIVE ──────────────────────────────────── */
 @media (max-width: 640px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-grid-5, .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
   .health-row { grid-template-columns: repeat(2, 1fr); }
   .mkpi-row-6 { grid-template-columns: repeat(3, 1fr); }
   .creator-grid { grid-template-columns: 1fr; }
@@ -404,7 +405,7 @@ body {
   </div>
 
   <!-- ═══ KPI CARDS ═════════════════════════════════════════ -->
-  <div class="kpi-grid">
+  <div class="kpi-grid kpi-grid-5">
     <div class="kpi-card">
       <div class="kpi-label">Total Views (YT + IG)</div>
       <div class="kpi-value">11.64L</div>
@@ -416,15 +417,22 @@ body {
       <div class="kpi-sub">Google 14.14L · Meta 4.38L</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Form Fills</div>
+      <div class="kpi-label">Leads</div>
       <div class="kpi-value">38</div>
-      <div class="kpi-sub">34 Meta · 4 YouTube</div>
+      <div class="kpi-sub">31 Meta · 7 YouTube</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Total Investment</div>
       <div class="kpi-value">₹1,06,724</div>
       <div class="kpi-sub">Ads ₹60,224 · Creators ₹46,500</div>
     </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Content Assets</div>
+      <div class="kpi-value">26</div>
+      <div class="kpi-sub">12 Shorts/Reels · 3 Videos · 11 Posts</div>
+    </div>
+  </div>
+  <div class="kpi-grid kpi-grid-4">
     <div class="kpi-card">
       <div class="kpi-label">Audience Gained (YT + IG)</div>
       <div class="kpi-value">594</div>
@@ -434,6 +442,16 @@ body {
       <div class="kpi-label">Creators Activated</div>
       <div class="kpi-value">4</div>
       <div class="kpi-sub">Dhurga · Prathik · Ashwadh · TamilMom</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cost Per Lead (All-in)</div>
+      <div class="kpi-value">₹2,809</div>
+      <div class="kpi-sub">₹399 Meta only · ₹92 Retargeting</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cost Per View (All-in)</div>
+      <div class="kpi-value">₹0.09</div>
+      <div class="kpi-sub">Ads + creators ÷ 11.64L views · Ads only ₹0.05</div>
     </div>
   </div>
 
@@ -452,7 +470,7 @@ body {
     <div class="health-chip">
       <div class="health-dot">🟡</div>
       <div class="health-label">Leads</div>
-      <div class="health-value">38 form fills · ₹2,809 CPL (all-in)</div>
+      <div class="health-value">38 leads · ₹2,809 CPL (all-in)</div>
     </div>
     <div class="health-chip">
       <div class="health-dot">🔴</div>
@@ -496,9 +514,10 @@ body {
             <tbody>
               <tr><td>Build awareness among TN students &amp; parents</td><td><span class="badge b-green">🟢 Achieved</span></td><td>18.52L paid impressions served</td></tr>
               <tr><td>Grow YouTube and Instagram organically</td><td><span class="badge b-amber">🟡 In Progress</span></td><td>540 YT subs · 54 IG followers (0 → 54, account built from scratch)</td></tr>
-              <tr><td>Generate qualified leads (form fills)</td><td><span class="badge b-amber">🟡 Partial</span></td><td>38 form fills · ₹1,585 CPL</td></tr>
+              <tr><td>Generate qualified leads (form fills)</td><td><span class="badge b-amber">🟡 Partial</span></td><td>38 leads · ₹1,585 CPL</td></tr>
               <tr><td>Test creator vs. brand content</td><td><span class="badge b-green">🟢 Done</span></td><td>Creator content 4.5× more views per post</td></tr>
-              <tr><td>Reach UAE Tamil diaspora</td><td><span class="badge b-amber">🟡 Partial</span></td><td>UAE campaign ran · ₹2,083 spent</td></tr>
+              <tr><td>Reach UAE Tamil diaspora</td><td><span class="badge b-amber">🟡 Partial</span></td><td>UAE campaign ran · ₹2,083 ad spend + ₹25,000 TamilMom fee</td></tr>
+              <tr><td>Convert leads to admissions</td><td><span class="badge b-red">🔴 Not Achieved</span></td><td>0 admissions attributed to campaign</td></tr>
             </tbody>
           </table>
 
@@ -672,7 +691,7 @@ body {
           <div class="section-icon ic-blue">📘</div>
           <div>
             <div class="section-title">Meta Ads Performance</div>
-            <div class="section-subtitle">₹12,384 spend · 4,21,316 reach · 34 form fills attributed</div>
+            <div class="section-subtitle">₹12,384 spend · 4,21,316 reach · 31 leads attributed</div>
           </div>
         </div>
         <div class="chevron">⌄</div>
@@ -716,7 +735,7 @@ body {
               <tr class="total">
                 <td>Total</td>
                 <td class="num">₹12,384</td><td class="num">4,21,316</td><td class="num">4,38,428</td>
-                <td>—</td><td class="num">34 actual form fills</td>
+                <td>—</td><td class="num">31 actual leads</td>
               </tr>
             </tbody>
           </table>
@@ -740,7 +759,7 @@ body {
               <tr><td>CPM</td><td>₹28.25</td><td>₹80–₹150</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
               <tr><td>CPC (traffic campaigns)</td><td>₹1.62</td><td>₹8–₹20</td><td><span class="badge b-green">🟢 Excellent</span></td></tr>
               <tr><td>CTR (traffic campaigns)</td><td>1.74%</td><td>1.5–3%</td><td><span class="badge b-green">🟢 Within range</span></td></tr>
-              <tr><td>CPL — Meta attributed</td><td>₹364</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
+              <tr><td>CPL — Meta attributed</td><td>₹399</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
               <tr><td>CPL — Retargeting only</td><td>₹92</td><td>₹150–₹400</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
             </tbody>
           </table>
@@ -964,7 +983,7 @@ body {
             </tbody>
           </table>
 
-          <div class="sh">Lead Profile — Form Fill Data (38 total)</div>
+          <div class="sh">Lead Profile (38 total)</div>
           <div class="two-col">
             <div>
               <table class="dt">
@@ -1034,7 +1053,7 @@ body {
               <tr><td>Meta CPC (traffic campaigns)</td><td>₹1.62</td><td>₹8–₹20</td><td><span class="badge b-green">🟢 Excellent</span></td></tr>
               <tr><td>Google Ads CPC</td><td>₹0.42</td><td>—</td><td><span class="badge b-green">🟢 Efficient</span></td></tr>
               <tr><td>CPL — Meta retargeting only</td><td>₹92</td><td>₹150–₹400</td><td><span class="badge b-green">🟢 Well below benchmark</span></td></tr>
-              <tr><td>CPL — Meta attributed</td><td>₹364</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
+              <tr><td>CPL — Meta attributed</td><td>₹399</td><td>₹150–₹400</td><td><span class="badge b-amber">🟡 Within range</span></td></tr>
               <tr><td>CPL — All media spend</td><td>₹1,585</td><td>₹150–₹400</td><td><span class="badge b-red">🔴 Attribution gap</span></td></tr>
               <tr><td>CPL — All-in (incl. creators)</td><td>₹2,809</td><td>—</td><td><span class="badge b-red">🔴 Attribution gap</span></td></tr>
             </tbody>
@@ -1052,14 +1071,126 @@ body {
           <div class="section-icon ic-teal">💡</div>
           <div>
             <div class="section-title">Learnings & Insights</div>
-            <div class="section-subtitle">What worked · What didn't · Key signals</div>
+            <div class="section-subtitle">6 things that worked · 6 that didn't · 5 audience signals</div>
           </div>
         </div>
         <div class="chevron">⌄</div>
       </div>
       <div class="section-body">
         <div class="section-inner">
-          <!-- coming after review -->
+
+          <div class="sh">What Worked</div>
+
+          <div class="callout"><strong>Retargeting was the single highest-ROI lever in the campaign.</strong> Running testimonial retargeting ads after the awareness phase drove 31 of 38 total leads at ₹92 CPL — more than 4× better than the ₹150–₹400 EdTech benchmark. YouTube Ads built the audience pool; Meta retargeting converted them. The two-touch funnel is validated.</div>
+
+          <table class="dt" style="margin-top:12px;">
+            <thead><tr><th>Learning</th><th>Evidence</th><th>Signal</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Retargeting multiplied lead volume</strong></td>
+                <td>31 of 38 leads from retargeting at ₹92 CPL</td>
+                <td><span class="badge b-green">Scale this</span></td>
+              </tr>
+              <tr>
+                <td><strong>Creator content massively outperformed brand content</strong></td>
+                <td>4.5× avg IG views/post; Dhurga 1.14L combined views at ₹0.02/view</td>
+                <td><span class="badge b-green">Scale this</span></td>
+              </tr>
+              <tr>
+                <td><strong>Alumni / peer testimonials drove best paid CTR</strong></td>
+                <td>Past Student 2: 11.06% CTR, ₹0.25 CPC — strongest of all Google creatives</td>
+                <td><span class="badge b-green">Make more</span></td>
+              </tr>
+              <tr>
+                <td><strong>Focusing on Chennai (Dhurga) outperformed broad TN targeting</strong></td>
+                <td>Dhurga's Chennai-first content: 1,03,610 YT views at 8.94% CTR; highest lead density from Chennai</td>
+                <td><span class="badge b-green">Sharpen geo</span></td>
+              </tr>
+              <tr>
+                <td><strong>English content attracted a more urban, relevant audience than Tamil</strong></td>
+                <td>Higher completion rates and stronger lead-to-click conversion on English creatives vs Tamil-language ads</td>
+                <td><span class="badge b-green">Lead with English</span></td>
+              </tr>
+              <tr>
+                <td><strong>Instagram built from zero showed early traction</strong></td>
+                <td>0 → 54 followers; 65K views; top Reel 13,251 views — all in 6 weeks from a blank account</td>
+                <td><span class="badge b-green">Keep building</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="sh">What Didn't Work</div>
+
+          <div class="callout" style="background:#FEF2F2;border-left-color:#EF4444;color:#991B1B;"><strong>Meta leads came in but quality was low. YouTube Ads drove 89% of ad spend with only 7 attributed leads.</strong> High click volumes (1,13,842 Google clicks + 7,642 Meta clicks) didn't translate proportionally to form completions — pointing to either landing page friction or a broad audience mismatch. YT's role was awareness and pool-building, not direct conversion.</div>
+
+          <table class="dt" style="margin-top:12px;">
+            <thead><tr><th>Learning</th><th>Evidence</th><th>Signal</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Meta lead quality was poor</strong></td>
+                <td>High link clicks (7,642), low verified form completions — many enquiries unqualified</td>
+                <td><span class="badge b-red">Qualify harder</span></td>
+              </tr>
+              <tr>
+                <td><strong>YouTube Ads didn't generate direct leads</strong></td>
+                <td>₹47,840 spend · 7 attributed leads · implied ₹6,834 CPL on YT alone</td>
+                <td><span class="badge b-amber">Awareness role only</span></td>
+              </tr>
+              <tr>
+                <td><strong>Awareness Founder video significantly underperformed</strong></td>
+                <td>1.12% CTR vs 8–11% for alumni; ₹4.94 CPC vs ₹0.25–₹0.42; ₹7,577 spent, 0 conversions</td>
+                <td><span class="badge b-red">Cut or rework</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cheat sheet statics drove reach but zero audience growth</strong></td>
+                <td>8 IG posts · avg 837 views · 0 follows — informational content without emotional hook</td>
+                <td><span class="badge b-red">Rethink format</span></td>
+              </tr>
+              <tr>
+                <td><strong>UAE market investment did not convert</strong></td>
+                <td>₹27,083 total (₹2,083 ads + ₹25,000 TamilMom fee) · 0 leads attributed</td>
+                <td><span class="badge b-amber">Validate demand first</span></td>
+              </tr>
+              <tr>
+                <td><strong>0 admissions closed from 38 leads</strong></td>
+                <td>Funnel drops at sales / follow-up stage — not a media problem, a conversion process gap</td>
+                <td><span class="badge b-red">Sales process fix</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="sh">Key Audience Signals</div>
+          <table class="dt">
+            <thead><tr><th>Signal</th><th>Data Point</th><th>Implication</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Class IX parents are the highest-intent segment</strong></td>
+                <td>50% of leads were Class IX — parents planning 2 years before boards</td>
+                <td>Target proactively, not reactively</td>
+              </tr>
+              <tr>
+                <td><strong>Mothers are the primary decision-makers</strong></td>
+                <td>Female viewers completed 60.9% of video vs 56.9% male; TamilMom content resonated</td>
+                <td>Mother-facing messaging works</td>
+              </tr>
+              <tr>
+                <td><strong>25–34 age group dominates — these are young parents, not students</strong></td>
+                <td>36.3% of all YT views; 40.8% of watch time in this bracket</td>
+                <td>Don't target teens — target their parents</td>
+              </tr>
+              <tr>
+                <td><strong>Mathematics is the primary pain point</strong></td>
+                <td>47% of leads requested Maths coaching; strong CTR on Maths-specific creative</td>
+                <td>Lead all creatives with Maths hook</td>
+              </tr>
+              <tr>
+                <td><strong>Chennai is the core converting market</strong></td>
+                <td>1,51,024 YT views from Chennai; highest lead density by city</td>
+                <td>Hyper-local Chennai targeting is more efficient than broad TN</td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>
